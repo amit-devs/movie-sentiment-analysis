@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+:root {
+  --background: #111111;
+  --surface: #1a1a1a;
+  --surface-hover: #262626;
+  --foreground: #f4f4f0; /* warm ivory */
+  --muted: #a3a3a3;
+  --accent: #6f0d1b; /* muted burgundy */
+  --accent-hover: #8c1021;
+  --gold: #d4af37;
+  --success: #2e7d32;
+  --error: #c62828;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  background-image: radial-gradient(circle at 50% -20%, #2a2a2a 0%, #111111 60%);
+  background-attachment: fixed;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.cinematic-card {
+  background-color: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cinematic-input {
+  background-color: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--foreground);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.cinematic-input:focus {
+  border-color: rgba(255, 255, 255, 0.3);
+  outline: none;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.03), inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.cinematic-btn {
+  background: linear-gradient(135deg, var(--accent) 0%, #4a0912 100%);
+  color: white;
+  transition: all 0.4s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+  font-size: 0.85rem;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.cinematic-btn:hover {
+  background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(111, 13, 27, 0.5);
+  border-color: rgba(255,255,255,0.2);
+}
+
+.grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 50;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}

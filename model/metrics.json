@@ -1,0 +1,17 @@
+{
+    "accuracy": 90.2,
+    "precision": 89.35,
+    "recall": 91.28,
+    "f1_score": 90.3,
+    "confusion_matrix": {
+        "true_negative": 4456,
+        "false_positive": 544,
+        "false_negative": 436,
+        "true_positive": 4564
+    },
+    "dataset_stats": {
+        "total_reviews": 50000,
+        "positive_reviews": 25000,
+        "negative_reviews": 25000
+    }
+}
