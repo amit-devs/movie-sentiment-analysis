@@ -61,3 +61,6 @@ yarn-error.log*
 # !model/tfidf_vectorizer.pkl
 # !model/metrics.json
 # !data/IMDB Dataset.csv
+
+# Local Databases
+data/*.db

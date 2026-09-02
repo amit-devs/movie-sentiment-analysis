@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function ModelInfo() {
-  const [metrics, setMetrics] = useState<any>(null);
+  const [metrics, setMetrics] = useState<Record<string, unknown> | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -18,8 +18,8 @@ export default function ModelInfo() {
         setMetrics(data);
         setLoading(false);
       })
-      .catch((err) => {
-        setError(err.message);
+      .catch((err: unknown) => {
+        setError(err instanceof Error ? err.message : String(err));
         setLoading(false);
       });
   }, []);

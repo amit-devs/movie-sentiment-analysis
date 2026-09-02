@@ -42,7 +42,10 @@ def predict_sentiment(review_text: str):
     prediction = model.predict(vectorized)[0]
     probabilities = model.predict_proba(vectorized)[0]
     
-    sentiment_label = "POSITIVE" if prediction == 1 else "NEGATIVE"
+    # Map the prediction back to string label
+    sentiment_map = {0: "NEGATIVE", 1: "POSITIVE", 2: "NEUTRAL"}
+    sentiment_label = sentiment_map.get(prediction, "UNKNOWN")
+    
     confidence = float(max(probabilities)) * 100
     
     return sentiment_label, round(confidence, 1)

@@ -60,8 +60,8 @@ export default function Home() {
         setResult(data);
         setIsAnalyzing(false);
       }, 800);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : String(err));
       setIsAnalyzing(false);
     }
   };
@@ -159,7 +159,7 @@ export default function Home() {
                 )}
                 
                 <h2 className="text-5xl font-light tracking-wider mb-6 mt-4 drop-shadow-lg">
-                  <span className={result.sentiment === 'POSITIVE' ? 'text-[var(--success)]' : 'text-[var(--error)]'}>
+                  <span className={result.sentiment === 'POSITIVE' ? 'text-[var(--success)]' : result.sentiment === 'NEUTRAL' ? 'text-[var(--neutral)]' : 'text-[var(--error)]'}>
                     {result.sentiment}
                   </span>
                 </h2>
@@ -175,7 +175,7 @@ export default function Home() {
                   </div>
                   <div className="w-full h-1.5 bg-black/50 rounded-full overflow-hidden shadow-inner">
                     <div 
-                      className={`h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(255,255,255,0.2)] ${result.sentiment === 'POSITIVE' ? 'bg-[var(--success)]' : 'bg-[var(--error)]'}`}
+                      className={`h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(255,255,255,0.2)] ${result.sentiment === 'POSITIVE' ? 'bg-[var(--success)]' : result.sentiment === 'NEUTRAL' ? 'bg-[var(--neutral)]' : 'bg-[var(--error)]'}`}
                       style={{ width: `${result.confidence}%` }}
                     />
                   </div>
@@ -201,7 +201,7 @@ export default function Home() {
                   {ex.movie}
                 </div>
                 <p className="text-sm text-[var(--muted)] group-hover:text-[var(--foreground)] transition-colors line-clamp-3">
-                  "{ex.review}"
+                  &quot;{ex.review}&quot;
                 </p>
               </button>
             ))}
