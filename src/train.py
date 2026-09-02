@@ -24,7 +24,7 @@ def generate_neutral_data(num_samples=5000):
     aspects = ['acting', 'plot', 'story', 'direction', 'cinematography', 'music', 'pacing', 'ending', 'dialogue', 'script']
     pos_adjectives = ['okay', 'decent', 'fine', 'acceptable', 'good', 'passable', 'alright', 'fair', 'great', 'excellent', 'amazing']
     neg_adjectives = ['boring', 'dull', 'slow', 'weak', 'bland', 'uninteresting', 'mediocre', 'predictable', 'flawed', 'bad', 'terrible', 'awful']
-    neutral_adjectives = ['average', 'mediocre', 'middle-of-the-road', 'okay', 'so-so', 'unremarkable', 'standard', 'typical', 'mixed']
+    neutral_adjectives = ['average', 'mediocre', 'middle-of-the-road', 'okay', 'ok', 'so-so', 'unremarkable', 'standard', 'typical', 'mixed', 'fine', 'acceptable', 'fair']
     
     templates = [
         "The {aspect} had {neg} {aspect} but a {pos} {aspect}.",
@@ -39,7 +39,12 @@ def generate_neutral_data(num_samples=5000):
         "Nothing special, just {neu}. The {aspect} was {pos} though.",
         "Decent watch but {neg}. The {aspect} carried it.",
         "It's just {neu}. I wouldn't watch it again, but it wasn't a waste of time.",
-        "The {aspect} was {pos} but the {aspect} was completely {neg}. Balanced out to an {neu} movie."
+        "The {aspect} was {pos} but the {aspect} was completely {neg}. Balanced out to an {neu} movie.",
+        "the movie was not too {neg} but not too {pos}. it is {neu}",
+        "not too {neg}, not too {pos}, just {neu}",
+        "neither {pos} nor {neg}, it was just {neu}",
+        "it wasn't {pos} and it wasn't {neg}. it is {neu}",
+        "the movie was not {neg} but not {pos}. it is ok"
     ]
     
     neutral_reviews = []

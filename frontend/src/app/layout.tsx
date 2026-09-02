@@ -48,9 +48,7 @@ export default function RootLayout({
         
         <footer className="border-t border-[#222] py-8 flex flex-col items-center gap-2 text-center text-xs uppercase tracking-widest text-[#666] mt-auto relative z-10">
           <p>© {new Date().getFullYear()} Movie Sentiment Analysis • NLP Project</p>
-          <p className="flex items-center gap-1.5 opacity-70">
-            Made with <span className="text-[var(--error)] text-sm">♥</span> by Amit
-          </p>
+          <p className="opacity-70 mt-1">Made by Amit</p>
         </footer>
       </body>
     </html>

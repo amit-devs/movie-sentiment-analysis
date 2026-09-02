@@ -2,8 +2,24 @@
 
 import { useEffect, useState } from "react";
 
+interface DatasetStats {
+  total_reviews: number;
+  positive_reviews: number;
+  negative_reviews: number;
+  neutral_reviews: number;
+}
+
+interface Metrics {
+  accuracy: number;
+  precision_macro: number;
+  recall_macro: number;
+  f1_score_macro: number;
+  confusion_matrix: number[][];
+  dataset_stats: DatasetStats;
+}
+
 export default function ModelInfo() {
-  const [metrics, setMetrics] = useState<Record<string, unknown> | null>(null);
+  const [metrics, setMetrics] = useState<Metrics | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -15,7 +31,7 @@ export default function ModelInfo() {
         return res.json();
       })
       .then((data) => {
-        setMetrics(data);
+        setMetrics(data as Metrics);
         setLoading(false);
       })
       .catch((err: unknown) => {
@@ -49,11 +65,11 @@ export default function ModelInfo() {
           <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="cinematic-card p-6 rounded-lg">
               <h3 className="text-[10px] font-bold tracking-[0.2em] text-[var(--muted)] mb-1 uppercase">Dataset</h3>
-              <p className="text-lg">IMDb Movie Reviews</p>
+              <p className="text-lg">IMDb Movie Reviews (Enhanced)</p>
             </div>
             <div className="cinematic-card p-6 rounded-lg">
               <h3 className="text-[10px] font-bold tracking-[0.2em] text-[var(--muted)] mb-1 uppercase">Task</h3>
-              <p className="text-lg">Binary Sentiment Classification</p>
+              <p className="text-lg">3-Class Sentiment Classification</p>
             </div>
             <div className="cinematic-card p-6 rounded-lg">
               <h3 className="text-[10px] font-bold tracking-[0.2em] text-[var(--muted)] mb-1 uppercase">Feature Extraction</h3>
@@ -61,7 +77,7 @@ export default function ModelInfo() {
             </div>
             <div className="cinematic-card p-6 rounded-lg">
               <h3 className="text-[10px] font-bold tracking-[0.2em] text-[var(--muted)] mb-1 uppercase">Model</h3>
-              <p className="text-lg">Logistic Regression</p>
+              <p className="text-lg">Logistic Regression (Balanced)</p>
             </div>
           </section>
 
@@ -71,19 +87,25 @@ export default function ModelInfo() {
             <div className="flex justify-around text-center flex-wrap gap-6">
               <div>
                 <div className="text-4xl font-light text-[var(--foreground)] mb-2">
-                  {metrics.dataset_stats?.total_reviews.toLocaleString() || '50,000'}
+                  {metrics.dataset_stats.total_reviews.toLocaleString()}
                 </div>
                 <div className="text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] uppercase">Total Reviews</div>
               </div>
               <div>
                 <div className="text-4xl font-light text-[var(--success)] mb-2">
-                  {metrics.dataset_stats?.positive_reviews.toLocaleString() || '25,000'}
+                  {metrics.dataset_stats.positive_reviews.toLocaleString()}
                 </div>
                 <div className="text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] uppercase">Positive</div>
               </div>
               <div>
+                <div className="text-4xl font-light text-[var(--neutral)] mb-2">
+                  {metrics.dataset_stats.neutral_reviews.toLocaleString()}
+                </div>
+                <div className="text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] uppercase">Neutral</div>
+              </div>
+              <div>
                 <div className="text-4xl font-light text-[var(--error)] mb-2">
-                  {metrics.dataset_stats?.negative_reviews.toLocaleString() || '25,000'}
+                  {metrics.dataset_stats.negative_reviews.toLocaleString()}
                 </div>
                 <div className="text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] uppercase">Negative</div>
               </div>
@@ -99,40 +121,52 @@ export default function ModelInfo() {
                 <div className="text-3xl font-light text-[var(--gold)]">{metrics.accuracy}%</div>
               </div>
               <div className="cinematic-card p-6 rounded-lg text-center flex flex-col justify-center">
-                <div className="text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] mb-2 uppercase">Precision</div>
-                <div className="text-3xl font-light text-[var(--foreground)]">{metrics.precision}%</div>
+                <div className="text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] mb-2 uppercase">Precision (Macro)</div>
+                <div className="text-3xl font-light text-[var(--foreground)]">{metrics.precision_macro}%</div>
               </div>
               <div className="cinematic-card p-6 rounded-lg text-center flex flex-col justify-center">
-                <div className="text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] mb-2 uppercase">Recall</div>
-                <div className="text-3xl font-light text-[var(--foreground)]">{metrics.recall}%</div>
+                <div className="text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] mb-2 uppercase">Recall (Macro)</div>
+                <div className="text-3xl font-light text-[var(--foreground)]">{metrics.recall_macro}%</div>
               </div>
               <div className="cinematic-card p-6 rounded-lg text-center flex flex-col justify-center">
-                <div className="text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] mb-2 uppercase">F1 Score</div>
-                <div className="text-3xl font-light text-[var(--foreground)]">{metrics.f1_score}%</div>
+                <div className="text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] mb-2 uppercase">F1 Score (Macro)</div>
+                <div className="text-3xl font-light text-[var(--foreground)]">{metrics.f1_score_macro}%</div>
               </div>
             </div>
 
             {/* Confusion Matrix */}
-            <div className="cinematic-card p-8 rounded-xl max-w-lg mx-auto">
-              <h3 className="text-center text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] mb-6 uppercase">Confusion Matrix</h3>
-              <div className="grid grid-cols-2 gap-4 text-center">
-                <div className="bg-[#111] p-4 rounded border border-[var(--success)]/30">
-                  <div className="text-sm text-[var(--muted)] mb-1">True Positive</div>
-                  <div className="text-2xl font-light">{metrics.confusion_matrix?.true_positive.toLocaleString()}</div>
-                </div>
-                <div className="bg-[#111] p-4 rounded border border-[var(--error)]/30">
-                  <div className="text-sm text-[var(--muted)] mb-1">False Positive</div>
-                  <div className="text-2xl font-light">{metrics.confusion_matrix?.false_positive.toLocaleString()}</div>
-                </div>
-                <div className="bg-[#111] p-4 rounded border border-[var(--error)]/30">
-                  <div className="text-sm text-[var(--muted)] mb-1">False Negative</div>
-                  <div className="text-2xl font-light">{metrics.confusion_matrix?.false_negative.toLocaleString()}</div>
-                </div>
-                <div className="bg-[#111] p-4 rounded border border-[var(--success)]/30">
-                  <div className="text-sm text-[var(--muted)] mb-1">True Negative</div>
-                  <div className="text-2xl font-light">{metrics.confusion_matrix?.true_negative.toLocaleString()}</div>
-                </div>
-              </div>
+            <div className="cinematic-card p-8 rounded-xl mx-auto overflow-x-auto">
+              <h3 className="text-center text-[10px] font-bold tracking-[0.15em] text-[var(--muted)] mb-6 uppercase">Confusion Matrix (3-Class)</h3>
+              <table className="w-full min-w-[500px] text-center text-sm border-separate border-spacing-2">
+                <thead>
+                  <tr>
+                    <th className="text-[var(--muted)] text-left font-normal italic">Actual \ Predicted</th>
+                    <th className="text-[var(--error)] pb-2 font-medium uppercase tracking-wider text-[10px]">Negative</th>
+                    <th className="text-[var(--success)] pb-2 font-medium uppercase tracking-wider text-[10px]">Positive</th>
+                    <th className="text-[var(--neutral)] pb-2 font-medium uppercase tracking-wider text-[10px]">Neutral</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th className="text-[var(--error)] text-left font-medium uppercase tracking-wider text-[10px]">Negative</th>
+                    <td className="bg-[var(--error)]/20 text-[var(--error)] p-4 rounded text-xl font-light">{metrics.confusion_matrix[0]?.[0]}</td>
+                    <td className="bg-[#111] text-[var(--muted)] p-4 rounded text-xl font-light">{metrics.confusion_matrix[0]?.[1]}</td>
+                    <td className="bg-[#111] text-[var(--muted)] p-4 rounded text-xl font-light">{metrics.confusion_matrix[0]?.[2]}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-[var(--success)] text-left font-medium uppercase tracking-wider text-[10px]">Positive</th>
+                    <td className="bg-[#111] text-[var(--muted)] p-4 rounded text-xl font-light">{metrics.confusion_matrix[1]?.[0]}</td>
+                    <td className="bg-[var(--success)]/20 text-[var(--success)] p-4 rounded text-xl font-light">{metrics.confusion_matrix[1]?.[1]}</td>
+                    <td className="bg-[#111] text-[var(--muted)] p-4 rounded text-xl font-light">{metrics.confusion_matrix[1]?.[2]}</td>
+                  </tr>
+                  <tr>
+                    <th className="text-[var(--neutral)] text-left font-medium uppercase tracking-wider text-[10px]">Neutral</th>
+                    <td className="bg-[#111] text-[var(--muted)] p-4 rounded text-xl font-light">{metrics.confusion_matrix[2]?.[0]}</td>
+                    <td className="bg-[#111] text-[var(--muted)] p-4 rounded text-xl font-light">{metrics.confusion_matrix[2]?.[1]}</td>
+                    <td className="bg-[var(--neutral)]/20 text-[var(--neutral)] p-4 rounded text-xl font-light">{metrics.confusion_matrix[2]?.[2]}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </section>
         </div>

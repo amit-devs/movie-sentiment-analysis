@@ -46,6 +46,17 @@ def predict_sentiment(review_text: str):
     sentiment_map = {0: "NEGATIVE", 1: "POSITIVE", 2: "NEUTRAL"}
     sentiment_label = sentiment_map.get(prediction, "UNKNOWN")
     
-    confidence = float(max(probabilities)) * 100
+    # If the model is not very confident about positive or negative, it's essentially a mixed/neutral review
+    pos_prob = probabilities[1]
+    neg_prob = probabilities[0]
+    neu_prob = probabilities[2]
+    
+    # Check if neither positive nor negative strongly dominate
+    if pos_prob < 0.65 and neg_prob < 0.65 and sentiment_label != "NEUTRAL":
+        sentiment_label = "NEUTRAL"
+        # Give it a reasonable confidence reflecting the ambiguity
+        confidence = 100.0 - (abs(pos_prob - neg_prob) * 100)
+    else:
+        confidence = float(max(probabilities)) * 100
     
     return sentiment_label, round(confidence, 1)

@@ -1,12 +1,12 @@
 {
-    "accuracy": 91.24,
-    "precision_macro": 93.58,
-    "recall_macro": 93.57,
-    "f1_score_macro": 93.57,
+    "accuracy": 91.21,
+    "precision_macro": 93.56,
+    "recall_macro": 93.55,
+    "f1_score_macro": 93.55,
     "confusion_matrix": [
         [
-            4473,
-            527,
+            4470,
+            530,
             0
         ],
         [
