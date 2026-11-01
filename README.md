@@ -2,6 +2,12 @@
 
 A full-stack Natural Language Processing (NLP) web application that classifies IMDb movie reviews as **Positive** or **Negative** using a custom-trained Logistic Regression model.
 
+# 🚀 Live Demo
+
+Deployed Application: https://movie-sentiment-frontend-d6cu.onrender.com
+
+Click the link above to access the live application.
+
 ## Features
 - **Custom Trained ML Model:** Trained on 50,000 IMDb movie reviews.
 - **Cinematic Web Interface:** Premium, modern, responsive UI built with Next.js and Tailwind CSS.
